@@ -92,6 +92,9 @@ return {
         end,
       })
 
+      require('lspconfig').ruby_lsp.setup({})
+      require('lspconfig').rubocop.setup({})
+
       require('mason-lspconfig').setup({
         ensure_installed = {},
         handlers = {
@@ -102,9 +105,6 @@ return {
           end,
         }
       })
-
-      require('lspconfig').ruby_lsp.setup({})
-      require('lspconfig').rubocop.setup({})
     end
   }
 }

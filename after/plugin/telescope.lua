@@ -4,3 +4,10 @@ vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = 'Telescope git search' 
 vim.keymap.set('n', '<leader>ps', function()
   builtin.grep_string({ search = vim.fn.input("Grep > ") });
 end)
+
+local telescope = require("telescope")
+telescope.setup({
+  defaults = {
+    layout_strategy = 'vertical',
+  }
+})
