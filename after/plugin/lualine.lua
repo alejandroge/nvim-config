@@ -2,6 +2,7 @@ require('lualine').setup({
   options = {
     theme = 'solarized_dark',
     component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
     refresh = {
       tabline = 1000
     }
