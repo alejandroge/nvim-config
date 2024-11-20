@@ -1,11 +1,16 @@
 require('lualine').setup({
   options = {
     theme = 'solarized_dark',
-    icons_enabled = false,
-    section_separators = '',
-    component_separators = '',
-    sections = {
-      lualine_a = ''
+    component_separators = { left = '', right = ''},
+    refresh = {
+      tabline = 1000
     }
+  },
+  sections = {
+    lualine_b = {},
+    lualine_c = {'filename', 'diff'}
+  },
+  tabline = {
+    lualine_y = {'branch'}
   }
 })
