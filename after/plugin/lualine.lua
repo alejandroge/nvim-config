@@ -1,6 +1,6 @@
 require('lualine').setup({
   options = {
-    theme = 'solarized_dark',
+    theme = 'catppuccin',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     refresh = {
