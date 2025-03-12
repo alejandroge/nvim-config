@@ -92,8 +92,29 @@ return {
         end,
       })
 
-      require('lspconfig').ruby_lsp.setup({})
-      require('lspconfig').rubocop.setup({})
+      -- RubyLSP only works for Ruby ^3
+      -- require('lspconfig').ruby_lsp.setup({})
+      require('lspconfig').solargraph.setup({
+          cmd = {
+            'docker',
+            'run',
+            '-i',
+            '--rm',
+            '-v',
+            '/Users/alejandro/Code/demodesk/backend',
+            'registry.gitlab.com/demodesk/demodesk/demodesk-app',
+            'solargraph',
+            'stdio',
+          },
+          settings = {
+              solargraph = {
+                  diagnostics = true
+              }
+          },
+
+      })
+      -- docker run -i --rm --name solargraph -v /Users/alejandro/Code/demodesk/backend registry.gitlab.com/demodesk/demodesk/demodesk-app:review-9511 solargraph
+      -- require('lspconfig').rubocop.setup({})
 
       require('mason-lspconfig').setup({
         ensure_installed = {},
