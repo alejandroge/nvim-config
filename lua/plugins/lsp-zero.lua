@@ -7,8 +7,14 @@ return {
   },
   {
     'williamboman/mason.nvim',
+    version = "^1.0.0",
     lazy = false,
     opts = {},
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    version = "^1.0.0",
+    lazy = false,
   },
 
   -- Autocompletion
@@ -103,6 +109,9 @@ return {
             '-v',
             '/Users/alejandro/Code/demodesk/backend',
             'registry.gitlab.com/demodesk/demodesk/demodesk-app',
+            'solargraph',
+            'bundle',
+            '&&',
             'solargraph',
             'stdio',
           },
