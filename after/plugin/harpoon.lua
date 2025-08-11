@@ -53,7 +53,7 @@ local function toggle_telescope(harpoon_files)
 
             table.remove(harpoon_files.items, selected_entry.index)
             current_picker:refresh(finder())
-          end)
+          end, { desc = "Delete selected harpoon file" })
           return true
         end,
     }):find()
