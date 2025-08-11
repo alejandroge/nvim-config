@@ -4,13 +4,22 @@ local harpoon = require("harpoon")
 harpoon:setup()
 -- REQUIRED
 
-vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
--- vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, 
+    { desc = "Add current file to harpoon" })
 
-vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+
+-- set up keymaps for accessing harpoon files by number. Number 0 is number 10
+for idx = 1, 9 do
+  local lhs = ("<leader>%d"):format(idx)
+  vim.keymap.set("n", lhs, function()
+    harpoon:list():select(idx)
+  end, { desc = ("Harpoon: select slot %d"):format(idx) })
+end
+
+vim.keymap.set("n", "<leader>0", function()
+  harpoon:list():select(10)
+end, { desc = "Harpoon: select slot 10" })
+
 
 -- basic telescope configuration
 local conf = require("telescope.config").values
