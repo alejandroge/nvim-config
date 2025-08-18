@@ -30,18 +30,25 @@ local function toggle_telescope(harpoon_files)
     end
 
     local finder = function()
-      local paths = {}
-      for _, item in ipairs(harpoon_files.items) do
-        table.insert(paths, item.value)
-      end
+        local results = {}
+        for i, item in ipairs(harpoon_files.items) do
+            table.insert(results, { idx = i, path = item.value })
+        end
 
-      return require("telescope.finders").new_table({
-        results = paths,
-      })
+        return require("telescope.finders").new_table({
+            results = results,
+            entry_maker = function(entry)
+                return {
+                    value = entry.path,
+                    ordinal = entry.path,
+                    display = ("%d: %s"):format(entry.idx, entry.path),
+                }
+            end,
+        })
     end
 
     require("telescope.pickers").new({}, {
-        prompt_title = "Harpoon",
+        prompt_title = "search harpoon files",
         finder = finder(),
         previewer = conf.file_previewer({}),
         sorter = conf.generic_sorter({}),
@@ -49,9 +56,12 @@ local function toggle_telescope(harpoon_files)
           map("i", "<C-d>", function()
             local state = require("telescope.actions.state")
             local selected_entry = state.get_selected_entry()
-            local current_picker = state.get_current_picker(prompt_bufnr)
 
-            table.remove(harpoon_files.items, selected_entry.index)
+            if selected_entry then
+                table.remove(harpoon_files.items, selected_entry.index)
+            end
+
+            local current_picker = state.get_current_picker(prompt_bufnr)
             current_picker:refresh(finder())
           end, { desc = "Delete selected harpoon file" })
           return true
