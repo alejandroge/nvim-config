@@ -1,8 +1,8 @@
 require('catppuccin').setup({
     flavour = 'frappe',
-    transparent_background = false, -- disables setting the background color.
+    transparent_background = true, -- disables setting the background color.
     dim_inactive = {
-        enabled = true, -- dims the background color of inactive window
+        enabled = false, -- dims the background color of inactive window
     },
     integrations = {
         harpoon = true,
