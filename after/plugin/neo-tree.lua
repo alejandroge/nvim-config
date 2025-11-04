@@ -29,8 +29,11 @@ require("neo-tree").setup({
     nesting_rules = {},
     filesystem = {
         filtered_items = {
+            hide_gitignored = false,
+            hide_dotfiles = false,
             hide_hidden = false, -- only works on Windows for hidden files/directories
             never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
+              ".git",
               ".DS_Store",
             },
         },
