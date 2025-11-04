@@ -20,3 +20,6 @@ vim.keymap.set("n", "<leader>cfp", function()
   vim.fn.setreg("+", filename)
   vim.notify("Copied: " .. filename)
 end, { noremap = true, silent = true, desc = "Copy filename to clipboard" })
+
+vim.keymap.set("n", "<leader>f", "za", { desc = "Toggle fold", silent = true })
+
