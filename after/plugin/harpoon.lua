@@ -5,19 +5,19 @@ harpoon:setup()
 -- REQUIRED
 
 vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end, 
-    { desc = "Add current file to harpoon" })
+{ desc = "Add current file to harpoon" })
 
 
 -- set up keymaps for accessing harpoon files by number. Number 0 is number 10
 for idx = 1, 9 do
-  local lhs = ("<leader>%d"):format(idx)
-  vim.keymap.set("n", lhs, function()
-    harpoon:list():select(idx)
-  end, { desc = ("Harpoon: select slot %d"):format(idx) })
+    local lhs = ("<leader>%d"):format(idx)
+    vim.keymap.set("n", lhs, function()
+        harpoon:list():select(idx)
+    end, { desc = ("Harpoon: select slot %d"):format(idx) })
 end
 
 vim.keymap.set("n", "<leader>0", function()
-  harpoon:list():select(10)
+    harpoon:list():select(10)
 end, { desc = "Harpoon: select slot 10" })
 
 
@@ -53,21 +53,21 @@ local function toggle_telescope(harpoon_files)
         previewer = conf.file_previewer({}),
         sorter = conf.generic_sorter({}),
         attach_mappings = function(prompt_bufnr, map)
-          map("i", "<C-d>", function()
-            local state = require("telescope.actions.state")
-            local selected_entry = state.get_selected_entry()
+            map("i", "<C-d>", function()
+                local state = require("telescope.actions.state")
+                local selected_entry = state.get_selected_entry()
 
-            if selected_entry then
-                table.remove(harpoon_files.items, selected_entry.index)
-            end
+                if selected_entry then
+                    table.remove(harpoon_files.items, selected_entry.index)
+                end
 
-            local current_picker = state.get_current_picker(prompt_bufnr)
-            current_picker:refresh(finder())
-          end, { desc = "Delete selected harpoon file" })
-          return true
+                local current_picker = state.get_current_picker(prompt_bufnr)
+                current_picker:refresh(finder())
+            end, { desc = "Delete selected harpoon file" })
+            return true
         end,
     }):find()
 end
 
 vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
-    { desc = "Open harpoon window" })
+{ desc = "Open harpoon window" })
