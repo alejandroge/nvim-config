@@ -68,15 +68,10 @@ return {
       vim.opt.signcolumn = 'yes'
     end,
     config = function()
-      local lsp_defaults = require('lspconfig').util.default_config
-
-      -- Add cmp_nvim_lsp capabilities settings to lspconfig
-      -- This should be executed before you configure any language server
-      lsp_defaults.capabilities = vim.tbl_deep_extend(
-        'force',
-        lsp_defaults.capabilities,
-        require('cmp_nvim_lsp').default_capabilities()
-      )
+      -- Add cmp_nvim_lsp capabilities to all servers
+      vim.lsp.config('*', {
+        capabilities = require('cmp_nvim_lsp').default_capabilities(),
+      })
 
       -- LspAttach is where you enable features that only work
       -- if there is a language server active in the file
@@ -99,8 +94,8 @@ return {
       })
 
       -- RubyLSP only works for Ruby ^3
-      -- require('lspconfig').ruby_lsp.setup({})
-      require('lspconfig').solargraph.setup({
+      -- vim.lsp.config('ruby_lsp', {})
+      vim.lsp.config('solargraph', {
           cmd = {
             'docker',
             'run',
@@ -123,15 +118,56 @@ return {
 
       })
       -- docker run -i --rm --name solargraph -v /Users/alejandro/Code/demodesk/backend registry.gitlab.com/demodesk/demodesk/demodesk-app:review-9511 solargraph
-      -- require('lspconfig').rubocop.setup({})
+      -- vim.lsp.config('rubocop', {})
+      vim.lsp.enable('solargraph')
+
+      -- Make vtsls handle Vue files by loading the Vue TS plugin (if installed via mason)
+      local vue_plugin = nil
+      local ok, registry = pcall(require, 'mason-registry')
+      if ok and registry.is_installed('vue-language-server') then
+        local vue_path = registry.get_package('vue-language-server'):get_install_path()
+        vue_plugin = {
+          name = '@vue/typescript-plugin',
+          location = vue_path .. '/node_modules/@vue/language-server',
+          languages = { 'vue' },
+          configNamespace = 'typescript',
+        }
+      end
+
+      vim.lsp.config('vtsls', vim.tbl_extend('force', vim.lsp.config.vtsls or {}, {
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'javascript.jsx',
+          'typescript',
+          'typescriptreact',
+          'typescript.tsx',
+          'vue',
+        },
+        settings = vue_plugin and {
+          vtsls = {
+            tsserver = {
+              globalPlugins = {
+                vue_plugin,
+              },
+            },
+          },
+        } or nil,
+      }))
 
       require('mason-lspconfig').setup({
-        ensure_installed = {},
+        ensure_installed = { 'vtsls' },
         handlers = {
           -- this first function is the "default handler"
           -- it applies to every language server without a "custom handler"
           function(server_name)
-            require('lspconfig')[server_name].setup({})
+            if server_name == 'solargraph' then
+              return
+            end
+
+            -- nvim-lspconfig renamed volar -> vue_ls
+            local normalized = server_name == 'volar' and 'vue_ls' or server_name
+            vim.lsp.enable(normalized)
           end,
         }
       })
