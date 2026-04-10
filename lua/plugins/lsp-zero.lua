@@ -68,6 +68,17 @@ return {
       vim.opt.signcolumn = 'yes'
     end,
     config = function()
+      vim.diagnostic.config({
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.INFO] = '',
+            [vim.diagnostic.severity.HINT] = '󰌵',
+          },
+        },
+      })
+
       -- Add cmp_nvim_lsp capabilities to all servers
       vim.lsp.config('*', {
         capabilities = require('cmp_nvim_lsp').default_capabilities(),
