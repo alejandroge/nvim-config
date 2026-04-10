@@ -102,14 +102,16 @@ return {
             '-i',
             '--rm',
             '-v',
+            '/Users/alejandro/Code/demodesk/backend:/Users/alejandro/Code/demodesk/backend',
+            '-w',
             '/Users/alejandro/Code/demodesk/backend',
             'registry.gitlab.com/demodesk/demodesk/demodesk-app',
-            'solargraph',
             'bundle',
-            '&&',
+            'exec',
             'solargraph',
             'stdio',
           },
+          root_markers = { 'Gemfile', '.solargraph.yml' },
           settings = {
               solargraph = {
                   diagnostics = true
